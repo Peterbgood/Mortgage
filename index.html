@@ -24,9 +24,16 @@
         
         <form id="mortgageForm">
             <div class="mb-3 row">
-                <label for="loanAmount" class="col-sm-5 col-form-label">Loan Amount ($):</label>
+                <label for="homePrice" class="col-sm-5 col-form-label">Home Price ($):</label>
                 <div class="col-sm-7">
-                    <input type="number" class="form-control" id="loanAmount" required>
+                    <input type="number" class="form-control" id="homePrice" required>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label for="downPayment" class="col-sm-5 col-form-label">Down Payment ($):</label>
+                <div class="col-sm-7">
+                    <input type="number" class="form-control" id="downPayment" required>
                 </div>
             </div>
 
@@ -71,6 +78,7 @@
         <div id="result" class="mt-4 card">
             <div class="card-body">
                 <h3 class="card-title">Results:</h3>
+                <p class="card-text">Loan Amount: <span id="loanAmount"></span></p>
                 <p class="card-text">Monthly Principal & Interest: <span id="monthlyPI"></span></p>
                 <p class="card-text">Monthly Taxes: <span id="monthlyTaxes"></span></p>
                 <p class="card-text">Monthly Insurance: <span id="monthlyInsurance"></span></p>
@@ -85,7 +93,8 @@
     <script>
         function calculateMortgage() {
             // Get input values
-            const loanAmount = parseFloat(document.getElementById('loanAmount').value);
+            const homePrice = parseFloat(document.getElementById('homePrice').value);
+            const downPayment = parseFloat(document.getElementById('downPayment').value);
             const interestRate = parseFloat(document.getElementById('interestRate').value) / 100 / 12;
             const loanTerm = parseFloat(document.getElementById('loanTerm').value) * 12;
             const annualTaxes = parseFloat(document.getElementById('propertyTaxes').value);
@@ -93,11 +102,20 @@
             const monthlyHOA = parseFloat(document.getElementById('hoa').value);
 
             // Validate inputs
-            if (isNaN(loanAmount) || isNaN(interestRate) || isNaN(loanTerm) || 
+            if (isNaN(homePrice) || isNaN(downPayment) || isNaN(interestRate) || isNaN(loanTerm) || 
                 isNaN(annualTaxes) || isNaN(annualInsurance) || isNaN(monthlyHOA)) {
                 alert('Please fill in all fields with valid numbers');
                 return;
             }
+
+            // Validate down payment is less than home price
+            if (downPayment >= homePrice) {
+                alert('Down payment must be less than home price');
+                return;
+            }
+
+            // Calculate loan amount
+            const loanAmount = homePrice - downPayment;
 
             // Calculate monthly principal and interest
             const monthlyPI = (loanAmount * interestRate * Math.pow(1 + interestRate, loanTerm)) / 
@@ -111,6 +129,7 @@
             const totalPayment = monthlyPI + monthlyTaxes + monthlyInsurance + monthlyHOA;
 
             // Display results
+            document.getElementById('loanAmount').textContent = '$' + loanAmount.toFixed(2);
             document.getElementById('monthlyPI').textContent = '$' + monthlyPI.toFixed(2);
             document.getElementById('monthlyTaxes').textContent = '$' + monthlyTaxes.toFixed(2);
             document.getElementById('monthlyInsurance').textContent = '$' + monthlyInsurance.toFixed(2);
