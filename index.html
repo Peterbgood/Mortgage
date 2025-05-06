@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mortgage Calculator</title>
+    <title>Mortgage Calculator - Knoxville & Florida</title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -11,84 +11,159 @@
             padding-top: 20px;
         }
         .calculator-container {
-            max-width: 600px;
+            max-width: 1200px;
         }
-        #result {
+        .result {
             display: none;
-            padding: 20px;
+            padding: 15px;
+        }
+        .calculator-card {
+            padding: 15px;
+            border: 1px solid #dee2e6;
+            border-radius: 0.25rem;
+            background-color: #f8f9fa;
+        }
+        .form-label {
+            margin-bottom: 0.25rem;
+            font-size: 0.9rem;
+        }
+        .form-control {
+            font-size: 0.9rem;
+            padding: 0.5rem;
+        }
+        .mb-3 {
+            margin-bottom: 0.75rem !important;
+        }
+        h3 {
+            font-size: 1.25rem;
+        }
+        .card-body {
+            padding: 1rem;
+        }
+        .card-text {
+            font-size: 0.85rem;
+        }
+        @media (max-width: 576px) {
+            .calculator-card {
+                padding: 10px;
+            }
+            .form-control {
+                font-size: 0.8rem;
+            }
+            .form-label {
+                font-size: 0.8rem;
+            }
+            h3 {
+                font-size: 1.1rem;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container calculator-container">
-        <h2 class="mb-4">Mortgage Payment Calculator</h2>
-        
-        <form id="mortgageForm">
-            <div class="mb-3 row">
-                <label for="homePrice" class="col-sm-5 col-form-label">Home Price ($):</label>
-                <div class="col-sm-7">
-                    <input type="number" class="form-control" id="homePrice" inputmode="numeric" required>
+        <h2 class="mb-4 text-center">Mortgage Payment Calculators</h2>
+        <div class="row">
+            <!-- Knoxville Calculator -->
+            <div class="col-6">
+                <div class="calculator-card">
+                    <h3 class="mb-3 text-center">Knoxville</h3>
+                    <form id="knoxvilleForm">
+                        <div class="mb-3">
+                            <label for="knoxvilleHomePrice" class="form-label">Home Price ($)</label>
+                            <input type="number" class="form-control" id="knoxvilleHomePrice" inputmode="numeric" value="500000" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="knoxvilleDownPayment" class="form-label">Down Payment ($)</label>
+                            <input type="number" class="form-control" id="knoxvilleDownPayment" inputmode="numeric" value="150000" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="knoxvilleInterestRate" class="form-label">Interest Rate (%)</label>
+                            <input type="number" step="0.1" class="form-control" id="knoxvilleInterestRate" inputmode="decimal" value="6.5" required>
+                            <small><a href="https://www.freddiemac.com/pmms" target="_blank">Compare rates</a></small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="knoxvilleLoanTerm" class="form-label">Loan Term (years)</label>
+                            <input type="number" class="form-control" id="knoxvilleLoanTerm" inputmode="numeric" value="30" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="knoxvillePropertyTaxes" class="form-label">Annual Property Taxes ($)</label>
+                            <input type="number" class="form-control" id="knoxvillePropertyTaxes" inputmode="numeric" value="1500" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="knoxvilleInsurance" class="form-label">Annual Insurance ($)</label>
+                            <input type="number" class="form-control" id="knoxvilleInsurance" inputmode="numeric" value="800" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="knoxvilleHoa" class="form-label">Monthly HOA Fees ($)</label>
+                            <input type="number" class="form-control" id="knoxvilleHoa" inputmode="numeric" value="35">
+                        </div>
+                        <div class="mb-3 text-center">
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="resetForm('knoxville')">Reset</button>
+                        </div>
+                    </form>
+                    <div id="knoxvilleResult" class="mt-3 card result">
+                        <div class="card-body">
+                            <h3 class="card-title">Results:</h3>
+                            <p class="card-text">Loan Amount: <span id="knoxvilleLoanAmount"></span></p>
+                            <p class="card-text">Monthly Principal & Interest: <span id="knoxvilleMonthlyPI"></span></p>
+                            <p class="card-text">Monthly Taxes: <span id="knoxvilleMonthlyTaxes"></span></p>
+                            <p class="card-text">Monthly Insurance: <span id="knoxvilleMonthlyInsurance"></span></p>
+                            <p class="card-text">Monthly HOA: <span id="knoxvilleMonthlyHOA"></span></p>
+                            <p class="card-text"><strong>Total Monthly Payment: <span id="knoxvilleTotalPayment"></span></strong></p>
+                        </div>
+                    </div>
                 </div>
             </div>
-
-            <div class="mb-3 row">
-                <label for="downPayment" class="col-sm-5 col-form-label">Down Payment ($):</label>
-                <div class="col-sm-7">
-                    <input type="number" class="form-control" id="downPayment" inputmode="numeric" required>
+            <!-- Florida Calculator -->
+            <div class="col-6">
+                <div class="calculator-card">
+                    <h3 class="mb-3 text-center">Florida</h3>
+                    <form id="floridaForm">
+                        <div class="mb-3">
+                            <label for="floridaHomePrice" class="form-label">Home Price ($)</label>
+                            <input type="number" class="form-control" id="floridaHomePrice" inputmode="numeric" value="425000" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="floridaDownPayment" class="form-label">Down Payment ($)</label>
+                            <input type="number" class="form-control" id="floridaDownPayment" inputmode="numeric" value="150000" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="floridaInterestRate" class="form-label">Interest Rate (%)</label>
+                            <input type="number" step="0.1" class="form-control" id="floridaInterestRate" inputmode="decimal" value="6.5" required>
+                            <small><a href="https://www.freddiemac.com/pmms" target="_blank">Compare rates</a></small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="floridaLoanTerm" class="form-label">Loan Term (years)</label>
+                            <input type="number" class="form-control" id="floridaLoanTerm" inputmode="numeric" value="30" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="floridaPropertyTaxes" class="form-label">Annual Property Taxes ($)</label>
+                            <input type="number" class="form-control" id="floridaPropertyTaxes" inputmode="numeric" value="5000" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="floridaInsurance" class="form-label">Annual Insurance ($)</label>
+                            <input type="number" class="form-control" id="floridaInsurance" inputmode="numeric" value="4000" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="floridaHoa" class="form-label">Monthly HOA Fees ($)</label>
+                            <input type="number" class="form-control" id="floridaHoa" inputmode="numeric" value="100">
+                        </div>
+                        <div class="mb-3 text-center">
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="resetForm('florida')">Reset</button>
+                        </div>
+                    </form>
+                    <div id="floridaResult" class="mt-3 card result">
+                        <div class="card-body">
+                            <h3 class="card-title">Results:</h3>
+                            <p class="card-text">Loan Amount: <span id="floridaLoanAmount"></span></p>
+                            <p class="card-text">Monthly Principal & Interest: <span id="floridaMonthlyPI"></span></p>
+                            <p class="card-text">Monthly Taxes: <span id="floridaMonthlyTaxes"></span></p>
+                            <p class="card-text">Monthly Insurance: <span id="floridaMonthlyInsurance"></span></p>
+                            <p class="card-text">Monthly HOA: <span id="floridaMonthlyHOA"></span></p>
+                            <p class="card-text"><strong>Total Monthly Payment: <span id="floridaTotalPayment"></span></strong></p>
+                        </div>
+                    </div>
                 </div>
-            </div>
-
-            <div class="mb-3 row">
-                <label for="interestRate" class="col-sm-5 col-form-label">Interest Rate (%):</label>
-                <div class="col-sm-7">
-                    <input type="number" step="0.1" class="form-control" id="interestRate" inputmode="decimal" value="6.5" required>
-                    <small><a href="https://www.freddiemac.com/pmms" target="_blank">Compare rates</a></small>
-                </div>
-            </div>
-
-            <div class="mb-3 row">
-                <label for="loanTerm" class="col-sm-5 col-form-label">Loan Term (years):</label>
-                <div class="col-sm-7">
-                    <input type="number" class="form-control" id="loanTerm" inputmode="numeric" required>
-                </div>
-            </div>
-
-            <div class="mb-3 row">
-                <label for="propertyTaxes" class="col-sm-5 col-form-label">Annual Property Taxes ($):</label>
-                <div class="col-sm-7">
-                    <input type="number" class="form-control" id="propertyTaxes" inputmode="numeric" required>
-                </div>
-            </div>
-
-            <div class="mb-3 row">
-                <label for="insurance" class="col-sm-5 col-form-label">Annual Insurance ($):</label>
-                <div class="col-sm-7">
-                    <input type="number" class="form-control" id="insurance" inputmode="numeric" required>
-                </div>
-            </div>
-
-            <div class="mb-3 row">
-                <label for="hoa" class="col-sm-5 col-form-label">Monthly HOA Fees ($):</label>
-                <div class="col-sm-7">
-                    <input type="number" class="form-control" id="hoa" inputmode="numeric">
-                </div>
-            </div>
-
-            <div class="mb-3">
-                <button type="button" class="btn btn-primary me-2" onclick="calculateMortgage()">Calculate</button>
-                <button type="button" class="btn btn-secondary" onclick="resetForm()">Reset</button>
-            </div>
-        </form>
-
-        <div id="result" class="mt-4 card">
-            <div class="card-body">
-                <h3 class="card-title">Results:</h3>
-                <p class="card-text">Loan Amount: <span id="loanAmount"></span></p>
-                <p class="card-text">Monthly Principal & Interest: <span id="monthlyPI"></span></p>
-                <p class="card-text">Monthly Taxes: <span id="monthlyTaxes"></span></p>
-                <p class="card-text">Monthly Insurance: <span id="monthlyInsurance"></span></p>
-                <p class="card-text">Monthly HOA: <span id="monthlyHOA"></span></p>
-                <p class="card-text"><strong>Total Monthly Payment: <span id="totalPayment"></span></strong></p>
             </div>
         </div>
     </div>
@@ -96,27 +171,27 @@
     <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        function calculateMortgage() {
+        function calculateMortgage(prefix) {
             // Get input values
-            const homePrice = parseFloat(document.getElementById('homePrice').value);
-            const downPayment = parseFloat(document.getElementById('downPayment').value);
-            const interestRate = parseFloat(document.getElementById('interestRate').value) / 100 / 12;
-            const loanTerm = parseFloat(document.getElementById('loanTerm').value) * 12;
-            const annualTaxes = parseFloat(document.getElementById('propertyTaxes').value);
-            const annualInsurance = parseFloat(document.getElementById('insurance').value);
-            const hoaInput = document.getElementById('hoa').value;
+            const homePrice = parseFloat(document.getElementById(`${prefix}HomePrice`).value);
+            const downPayment = parseFloat(document.getElementById(`${prefix}DownPayment`).value) || 0;
+            const interestRate = parseFloat(document.getElementById(`${prefix}InterestRate`).value) / 100 / 12;
+            const loanTerm = parseFloat(document.getElementById(`${prefix}LoanTerm`).value) * 12;
+            const annualTaxes = parseFloat(document.getElementById(`${prefix}PropertyTaxes`).value) || 0;
+            const annualInsurance = parseFloat(document.getElementById(`${prefix}Insurance`).value) || 0;
+            const hoaInput = document.getElementById(`${prefix}Hoa`).value;
             const monthlyHOA = hoaInput === '' || isNaN(parseFloat(hoaInput)) ? 0 : parseFloat(hoaInput);
 
             // Validate required inputs
             if (isNaN(homePrice) || isNaN(downPayment) || isNaN(interestRate) || isNaN(loanTerm) || 
                 isNaN(annualTaxes) || isNaN(annualInsurance)) {
-                alert('Please fill in all required fields with valid numbers');
+                document.getElementById(`${prefix}Result`).style.display = 'none';
                 return;
             }
 
             // Validate down payment is less than home price
             if (downPayment >= homePrice) {
-                alert('Down payment must be less than home price');
+                document.getElementById(`${prefix}Result`).style.display = 'none';
                 return;
             }
 
@@ -135,20 +210,48 @@
             const totalPayment = monthlyPI + monthlyTaxes + monthlyInsurance + monthlyHOA;
 
             // Display results
-            document.getElementById('loanAmount').textContent = '$' + loanAmount.toFixed(2);
-            document.getElementById('monthlyPI').textContent = '$' + monthlyPI.toFixed(2);
-            document.getElementById('monthlyTaxes').textContent = '$' + monthlyTaxes.toFixed(2);
-            document.getElementById('monthlyInsurance').textContent = '$' + monthlyInsurance.toFixed(2);
-            document.getElementById('monthlyHOA').textContent = '$' + monthlyHOA.toFixed(2);
-            document.getElementById('totalPayment').textContent = '$' + totalPayment.toFixed(2);
-            document.getElementById('result').style.display = 'block';
+            document.getElementById(`${prefix}LoanAmount`).textContent = '$' + loanAmount.toFixed(2);
+            document.getElementById(`${prefix}MonthlyPI`).textContent = '$' + monthlyPI.toFixed(2);
+            document.getElementById(`${prefix}MonthlyTaxes`).textContent = '$' + monthlyTaxes.toFixed(2);
+            document.getElementById(`${prefix}MonthlyInsurance`).textContent = '$' + monthlyInsurance.toFixed(2);
+            document.getElementById(`${prefix}MonthlyHOA`).textContent = '$' + monthlyHOA.toFixed(2);
+            document.getElementById(`${prefix}TotalPayment`).textContent = '$' + totalPayment.toFixed(2);
+            document.getElementById(`${prefix}Result`).style.display = 'block';
         }
 
-        function resetForm() {
-            document.getElementById('mortgageForm').reset();
-            document.getElementById('interestRate').value = '6.5'; // Restore default interest rate
-            document.getElementById('result').style.display = 'none';
+        function resetForm(prefix) {
+            document.getElementById(`${prefix}Form`).reset();
+            // Restore default values
+            if (prefix === 'knoxville') {
+                document.getElementById('knoxvilleHomePrice').value = '500000';
+                document.getElementById('knoxvilleDownPayment').value = '150000';
+                document.getElementById('knoxvilleInterestRate').value = '6.5';
+                document.getElementById('knoxvilleLoanTerm').value = '30';
+                document.getElementById('knoxvillePropertyTaxes').value = '1500';
+                document.getElementById('knoxvilleInsurance').value = '800';
+                document.getElementById('knoxvilleHoa').value = '35';
+            } else if (prefix === 'florida') {
+                document.getElementById('floridaHomePrice').value = '425000';
+                document.getElementById('floridaDownPayment').value = '150000';
+                document.getElementById('floridaInterestRate').value = '6.5';
+                document.getElementById('floridaLoanTerm').value = '30';
+                document.getElementById('floridaPropertyTaxes').value = '5000';
+                document.getElementById('floridaInsurance').value = '4000';
+                document.getElementById('floridaHoa').value = '100';
+            }
+            document.getElementById(`${prefix}Result`).style.display = 'none';
+            calculateMortgage(prefix); // Recalculate with default values
         }
+
+        // Add event listeners to all inputs for real-time updates
+        ['knoxville', 'florida'].forEach(prefix => {
+            const inputs = document.querySelectorAll(`#${prefix}Form input`);
+            inputs.forEach(input => {
+                input.addEventListener('input', () => calculateMortgage(prefix));
+            });
+            // Initial calculation with default values
+            calculateMortgage(prefix);
+        });
     </script>
 </body>
 </html>
