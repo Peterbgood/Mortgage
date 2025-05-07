@@ -70,15 +70,15 @@
                     <form id="knoxvilleForm">
                         <div class="mb-3">
                             <label for="knoxvilleHomePrice" class="form-label">Home Price ($)</label>
-                            <input type="number" class="form-control" id="knoxvilleHomePrice" inputmode="numeric" value="500000" required>
+                            <input type="number" class="form-control" id="knoxvilleHomePrice" inputmode="numeric" value="425000" required>
                         </div>
                         <div class="mb-3">
                             <label for="knoxvilleDownPayment" class="form-label">Down Payment ($)</label>
-                            <input type="number" class="form-control" id="knoxvilleDownPayment" inputmode="numeric" value="150000" required>
+                            <input type="number" class="form-control" id="knoxvilleDownPayment" inputmode="numeric" value="100000" required>
                         </div>
                         <div class="mb-3">
                             <label for="knoxvilleInterestRate" class="form-label">Interest Rate (%)</label>
-                            <input type="number" step="0.1" class="form-control" id="knoxvilleInterestRate" inputmode="decimal" value="6.5" required>
+                            <input type="number" step="0.1" class="form-control" id="knoxvilleInterestRate" inputmode="decimal" value="6.8" required>
                             <small><a href="https://www.freddiemac.com/pmms" target="_blank">Compare rates</a></small>
                         </div>
                         <div class="mb-3">
@@ -125,11 +125,11 @@
                         </div>
                         <div class="mb-3">
                             <label for="floridaDownPayment" class="form-label">Down Payment ($)</label>
-                            <input type="number" class="form-control" id="floridaDownPayment" inputmode="numeric" value="150000" required>
+                            <input type="number" class="form-control" id="floridaDownPayment" inputmode="numeric" value="100000" required>
                         </div>
                         <div class="mb-3">
                             <label for="floridaInterestRate" class="form-label">Interest Rate (%)</label>
-                            <input type="number" step="0.1" class="form-control" id="floridaInterestRate" inputmode="decimal" value="6.5" required>
+                            <input type="number" step="0.1" class="form-control" id="floridaInterestRate" inputmode="decimal" value="6.8" required>
                             <small><a href="https://www.freddiemac.com/pmms" target="_blank">Compare rates</a></small>
                         </div>
                         <div class="mb-3">
@@ -138,7 +138,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="floridaPropertyTaxes" class="form-label">Annual Property Taxes ($)</label>
-                            <input type="number" class="form-control" id="floridaPropertyTaxes" inputmode="numeric" value="5000" required>
+                            <input type="number" class="form-control" id="floridaPropertyTaxes" inputmode="numeric" value="6500" required>
                         </div>
                         <div class="mb-3">
                             <label for="floridaInsurance" class="form-label">Annual Insurance ($)</label>
@@ -223,19 +223,19 @@
             document.getElementById(`${prefix}Form`).reset();
             // Restore default values
             if (prefix === 'knoxville') {
-                document.getElementById('knoxvilleHomePrice').value = '500000';
-                document.getElementById('knoxvilleDownPayment').value = '150000';
-                document.getElementById('knoxvilleInterestRate').value = '6.5';
+                document.getElementById('knoxvilleHomePrice').value = '425000';
+                document.getElementById('knoxvilleDownPayment').value = '100000';
+                document.getElementById('knoxvilleInterestRate').value = '6.8';
                 document.getElementById('knoxvilleLoanTerm').value = '30';
                 document.getElementById('knoxvillePropertyTaxes').value = '1500';
                 document.getElementById('knoxvilleInsurance').value = '800';
                 document.getElementById('knoxvilleHoa').value = '35';
             } else if (prefix === 'florida') {
                 document.getElementById('floridaHomePrice').value = '425000';
-                document.getElementById('floridaDownPayment').value = '150000';
-                document.getElementById('floridaInterestRate').value = '6.5';
+                document.getElementById('floridaDownPayment').value = '100000';
+                document.getElementById('floridaInterestRate').value = '6.8';
                 document.getElementById('floridaLoanTerm').value = '30';
-                document.getElementById('floridaPropertyTaxes').value = '5000';
+                document.getElementById('floridaPropertyTaxes').value = '6500';
                 document.getElementById('floridaInsurance').value = '4000';
                 document.getElementById('floridaHoa').value = '100';
             }
