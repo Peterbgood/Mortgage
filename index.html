@@ -70,11 +70,15 @@
                     <form id="knoxvilleForm">
                         <div class="mb-3">
                             <label for="knoxvilleHomePrice" class="form-label">Home Price ($)</label>
-                            <input type="number" class="form-control" id="knoxvilleHomePrice" inputmode="numeric" value="425000" required>
+                            <input type="number" class="form-control" id="knoxvilleHomePrice" inputmode="numeric" value="450000" required>
                         </div>
                         <div class="mb-3">
                             <label for="knoxvilleDownPayment" class="form-label">Down Payment ($)</label>
                             <input type="number" class="form-control" id="knoxvilleDownPayment" inputmode="numeric" value="100000" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="knoxvilleDownPaymentPercent" class="form-label">Down Payment (%)</label>
+                            <input type="number" step="0.1" class="form-control" id="knoxvilleDownPaymentPercent" inputmode="decimal" value="22.22" required>
                         </div>
                         <div class="mb-3">
                             <label for="knoxvilleInterestRate" class="form-label">Interest Rate (%)</label>
@@ -105,6 +109,7 @@
                         <div class="card-body">
                             <h3 class="card-title">Results:</h3>
                             <p class="card-text">Loan Amount: <span id="knoxvilleLoanAmount"></span></p>
+                            <p class="card-text">Down Payment Percentage: <span id="knoxvilleDownPaymentPercentDisplay"></span></p>
                             <p class="card-text">Monthly Principal & Interest: <span id="knoxvilleMonthlyPI"></span></p>
                             <p class="card-text">Monthly Taxes: <span id="knoxvilleMonthlyTaxes"></span></p>
                             <p class="card-text">Monthly Insurance: <span id="knoxvilleMonthlyInsurance"></span></p>
@@ -121,11 +126,15 @@
                     <form id="floridaForm">
                         <div class="mb-3">
                             <label for="floridaHomePrice" class="form-label">Home Price ($)</label>
-                            <input type="number" class="form-control" id="floridaHomePrice" inputmode="numeric" value="425000" required>
+                            <input type="number" class="form-control" id="floridaHomePrice" inputmode="numeric" value="450000" required>
                         </div>
                         <div class="mb-3">
                             <label for="floridaDownPayment" class="form-label">Down Payment ($)</label>
                             <input type="number" class="form-control" id="floridaDownPayment" inputmode="numeric" value="100000" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="floridaDownPaymentPercent" class="form-label">Down Payment (%)</label>
+                            <input type="number" step="0.1" class="form-control" id="floridaDownPaymentPercent" inputmode="decimal" value="22.22" required>
                         </div>
                         <div class="mb-3">
                             <label for="floridaInterestRate" class="form-label">Interest Rate (%)</label>
@@ -156,6 +165,7 @@
                         <div class="card-body">
                             <h3 class="card-title">Results:</h3>
                             <p class="card-text">Loan Amount: <span id="floridaLoanAmount"></span></p>
+                            <p class="card-text">Down Payment Percentage: <span id="floridaDownPaymentPercentDisplay"></span></p>
                             <p class="card-text">Monthly Principal & Interest: <span id="floridaMonthlyPI"></span></p>
                             <p class="card-text">Monthly Taxes: <span id="floridaMonthlyTaxes"></span></p>
                             <p class="card-text">Monthly Insurance: <span id="floridaMonthlyInsurance"></span></p>
@@ -174,7 +184,8 @@
         function calculateMortgage(prefix) {
             // Get input values
             const homePrice = parseFloat(document.getElementById(`${prefix}HomePrice`).value);
-            const downPayment = parseFloat(document.getElementById(`${prefix}DownPayment`).value) || 0;
+            let downPayment = parseFloat(document.getElementById(`${prefix}DownPayment`).value) || 0;
+            const downPaymentPercent = parseFloat(document.getElementById(`${prefix}DownPaymentPercent`).value) || 0;
             const interestRate = parseFloat(document.getElementById(`${prefix}InterestRate`).value) / 100 / 12;
             const loanTerm = parseFloat(document.getElementById(`${prefix}LoanTerm`).value) * 12;
             const annualTaxes = parseFloat(document.getElementById(`${prefix}PropertyTaxes`).value) || 0;
@@ -183,14 +194,25 @@
             const monthlyHOA = hoaInput === '' || isNaN(parseFloat(hoaInput)) ? 0 : parseFloat(hoaInput);
 
             // Validate required inputs
-            if (isNaN(homePrice) || isNaN(downPayment) || isNaN(interestRate) || isNaN(loanTerm) || 
+            if (isNaN(homePrice) || isNaN(downPayment) || isNaN(downPaymentPercent) || isNaN(interestRate) || isNaN(loanTerm) || 
                 isNaN(annualTaxes) || isNaN(annualInsurance)) {
                 document.getElementById(`${prefix}Result`).style.display = 'none';
                 return;
             }
 
+            // Sync down payment and percentage
+            const calculatedPercent = (downPayment / homePrice) * 100;
+            if (document.activeElement.id === `${prefix}DownPaymentPercent`) {
+                // If percentage input is active, update down payment
+                downPayment = (downPaymentPercent / 100) * homePrice;
+                document.getElementById(`${prefix}DownPayment`).value = downPayment.toFixed(2);
+            } else {
+                // Otherwise, update percentage input
+                document.getElementById(`${prefix}DownPaymentPercent`).value = calculatedPercent.toFixed(2);
+            }
+
             // Validate down payment is less than home price
-            if (downPayment >= homePrice) {
+            if (downPayment >= homePrice || downPaymentPercent >= 100) {
                 document.getElementById(`${prefix}Result`).style.display = 'none';
                 return;
             }
@@ -211,6 +233,7 @@
 
             // Display results
             document.getElementById(`${prefix}LoanAmount`).textContent = '$' + loanAmount.toFixed(2);
+            document.getElementById(`${prefix}DownPaymentPercentDisplay`).textContent = calculatedPercent.toFixed(2) + '%';
             document.getElementById(`${prefix}MonthlyPI`).textContent = '$' + monthlyPI.toFixed(2);
             document.getElementById(`${prefix}MonthlyTaxes`).textContent = '$' + monthlyTaxes.toFixed(2);
             document.getElementById(`${prefix}MonthlyInsurance`).textContent = '$' + monthlyInsurance.toFixed(2);
@@ -223,16 +246,18 @@
             document.getElementById(`${prefix}Form`).reset();
             // Restore default values
             if (prefix === 'knoxville') {
-                document.getElementById('knoxvilleHomePrice').value = '425000';
+                document.getElementById('knoxvilleHomePrice').value = '450000';
                 document.getElementById('knoxvilleDownPayment').value = '100000';
+                document.getElementById('knoxvilleDownPaymentPercent').value = '22.22';
                 document.getElementById('knoxvilleInterestRate').value = '6.8';
                 document.getElementById('knoxvilleLoanTerm').value = '30';
                 document.getElementById('knoxvillePropertyTaxes').value = '1500';
                 document.getElementById('knoxvilleInsurance').value = '800';
                 document.getElementById('knoxvilleHoa').value = '35';
             } else if (prefix === 'florida') {
-                document.getElementById('floridaHomePrice').value = '425000';
+                document.getElementById('floridaHomePrice').value = '450000';
                 document.getElementById('floridaDownPayment').value = '100000';
+                document.getElementById('floridaDownPaymentPercent').value = '22.22';
                 document.getElementById('floridaInterestRate').value = '6.8';
                 document.getElementById('floridaLoanTerm').value = '30';
                 document.getElementById('floridaPropertyTaxes').value = '6500';
