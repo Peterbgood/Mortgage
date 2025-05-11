@@ -110,6 +110,7 @@
                             <h3 class="card-title">Results:</h3>
                             <p class="card-text">Loan Amount: <span id="knoxvilleLoanAmount"></span></p>
                             <p class="card-text">Down Payment Percentage: <span id="knoxvilleDownPaymentPercentDisplay"></span></p>
+                            <p class="card-text">Estimated Closing Costs (2%-5%): <span id="knoxvilleClosingCosts"></span></p>
                             <p class="card-text">Monthly Principal & Interest: <span id="knoxvilleMonthlyPI"></span></p>
                             <p class="card-text">Monthly Taxes: <span id="knoxvilleMonthlyTaxes"></span></p>
                             <p class="card-text">Monthly Insurance: <span id="knoxvilleMonthlyInsurance"></span></p>
@@ -166,6 +167,7 @@
                             <h3 class="card-title">Results:</h3>
                             <p class="card-text">Loan Amount: <span id="floridaLoanAmount"></span></p>
                             <p class="card-text">Down Payment Percentage: <span id="floridaDownPaymentPercentDisplay"></span></p>
+                            <p class="card-text">Estimated Closing Costs (2%-5%): <span id="floridaClosingCosts"></span></p>
                             <p class="card-text">Monthly Principal & Interest: <span id="floridaMonthlyPI"></span></p>
                             <p class="card-text">Monthly Taxes: <span id="floridaMonthlyTaxes"></span></p>
                             <p class="card-text">Monthly Insurance: <span id="floridaMonthlyInsurance"></span></p>
@@ -222,10 +224,14 @@
             // Calculate monthly principal and interest
             const monthlyPI = (loanAmount * interestRate * Math.pow(1 + interestRate, loanTerm)) / 
                             (Math.pow(1 + interestRate, loanTerm) - 1) || 0;
-            
+
             // Calculate monthly taxes and insurance
             const monthlyTaxes = annualTaxes / 12;
             const monthlyInsurance = annualInsurance / 12;
+
+            // Calculate closing costs (2% to 5% of home price)
+            const closingCostsLow = homePrice * 0.02;
+            const closingCostsHigh = homePrice * 0.05;
 
             // Calculate total monthly payment
             const totalPayment = monthlyPI + monthlyTaxes + monthlyInsurance + monthlyHOA;
@@ -233,6 +239,7 @@
             // Display results
             document.getElementById(`${prefix}LoanAmount`).textContent = '$' + loanAmount.toFixed(2);
             document.getElementById(`${prefix}DownPaymentPercentDisplay`).textContent = downPaymentPercent.toFixed(2) + '%';
+            document.getElementById(`${prefix}ClosingCosts`).textContent = '$' + closingCostsLow.toFixed(2) + ' - $' + closingCostsHigh.toFixed(2);
             document.getElementById(`${prefix}MonthlyPI`).textContent = '$' + monthlyPI.toFixed(2);
             document.getElementById(`${prefix}MonthlyTaxes`).textContent = '$' + monthlyTaxes.toFixed(2);
             document.getElementById(`${prefix}MonthlyInsurance`).textContent = '$' + monthlyInsurance.toFixed(2);
